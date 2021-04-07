@@ -123,7 +123,7 @@
 /*!< Uncomment the following line if you need to relocate the vector table
      anywhere in Flash or Sram, else the vector table is kept at the automatic
      remap of boot address selected */
-/* #define USER_VECT_TAB_ADDRESS */
+#define USER_VECT_TAB_ADDRESS
 
 #if defined(USER_VECT_TAB_ADDRESS)
 /*!< Uncomment the following line if you need to relocate your vector Table
@@ -173,6 +173,8 @@
   const uint8_t  APBPrescTable[8] =  {0U, 0U, 0U, 0U, 1U, 2U, 3U, 4U};
   const uint32_t MSIRangeTable[12] = {100000U,   200000U,   400000U,   800000U,  1000000U,  2000000U, \
                                       4000000U, 8000000U, 16000000U, 24000000U, 32000000U, 48000000U};
+
+  extern uint32_t g_pfnVectors;
 /**
   * @}
   */
@@ -198,7 +200,7 @@ void SystemInit(void)
 {
 #if defined(USER_VECT_TAB_ADDRESS)
   /* Configure the Vector Table location -------------------------------------*/
-  SCB->VTOR = VECT_TAB_BASE_ADDRESS | VECT_TAB_OFFSET;
+  SCB->VTOR = (__IO uint32_t)&g_pfnVectors;
 #endif
 
   /* FPU settings ------------------------------------------------------------*/
